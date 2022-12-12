@@ -19,31 +19,12 @@ public  class Reader {
     public String number_card;
 
     public Reader(){}
-    //String url = "jdbc:postgresql://127.0.0.1:5432/library";
-    //Connection connection= null;
+
 
     public void Init(Connection cont, String login) throws SQLException {
-/*
-
-        try {
-            Class.forName("org.postgresql.Driver");
-            connection = DriverManager.getConnection(url,login,password);
-        } catch (Exception ex ) {
-            Logger.getLogger(Reader.class.getName()).log(Level.SEVERE, null, ex);
-        }finally {
-            if(connection!=null){
-                try {
-                    connection.close();
-                }catch (SQLException ex){
-                    Logger.getLogger(Reader.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-
- */
 
         String sql1 = "SELECT * FROM reader_view_their_data('"+login+"')";
-        //var statement = connection.createStatement();
+
         Statement statement = null;
         statement = cont.createStatement();
         var tmpres1 = statement.executeQuery(sql1);

@@ -16,11 +16,11 @@ import java.util.logging.Logger;
 
 public class JFrameLogin  extends JFrame{
     Color clr1 = new Color(190, 209, 232);
-    JLabel l = new JLabel("Login:");
+    JLabel l = new JLabel("Логин:");
     JTextField login = new JTextField();
-    JLabel p = new JLabel("Password:");
+    JLabel p = new JLabel("Пароль:");
     JTextField r_password = new JPasswordField();
-    JButton button = new JButton("LOGIN");
+    JButton button = new JButton("Войти");
 
 
     public JFrameLogin(){
@@ -32,10 +32,6 @@ public class JFrameLogin  extends JFrame{
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLayout(null);
         setResizable(false);
-
-
-
-
 
         l.setBounds(150,100, 100,30);
         login.setBounds(220,100,100,30);

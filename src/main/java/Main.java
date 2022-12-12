@@ -38,8 +38,6 @@ public class Main {
 
         //JFrameMainWindowCheifLibrarian jFrameСрушаLibrarian = new JFrameMainWindowCheifLibrarian();
 
-
-
         JFrameLogin JFrameMainWindowLibrarian = new JFrameLogin();
 /*
         Connection connection= null;
