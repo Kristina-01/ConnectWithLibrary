@@ -1,3 +1,4 @@
+import Model.Data;
 import Model.Reader;
 import org.apache.commons.codec.binary.Hex;
 
@@ -30,6 +31,8 @@ public class JFrameLogin  extends JFrame{
         super.setLocationRelativeTo(null);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLayout(null);
+        setResizable(false);
+
 
 
 
@@ -67,7 +70,7 @@ public class JFrameLogin  extends JFrame{
         @Override
         public void actionPerformed(ActionEvent e) {
             setVisible(false);
-            setVisible(false);
+
             name = login.getText();
             password = r_password.getText();
             HashPassword hashPassword = new HashPassword(password);
@@ -91,11 +94,11 @@ public class JFrameLogin  extends JFrame{
                 boolean isres1= false;
                 while (tmpres1.next()) {
                      Reader r = new Reader();
-                     r.Init(connection,name,hashedString);
-
-
-                    Main.TOwn.reader = r;
-                    isres1 = tmpres1.getBoolean(1);
+                     r.Init(connection,name);
+                     Main.TOwn.reader = r;
+                     isres1 = tmpres1.getBoolean(1);
+                     Data data = new Data(name, hashedString);
+                     Main.Data.data =data;
                 }
 
                 boolean isres2 = false;
@@ -103,6 +106,8 @@ public class JFrameLogin  extends JFrame{
                     var tmpres2 = statement.executeQuery(check2);
                     while (tmpres2.next()) {
                         isres2 = tmpres2.getBoolean(1);
+                        Data data = new Data(name, hashedString);
+                        Main.Data.data =data;
                     }
                 }
 

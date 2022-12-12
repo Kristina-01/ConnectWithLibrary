@@ -1,19 +1,15 @@
+import Model.Data;
 import Model.Reader;
 import org.apache.commons.codec.binary.Hex;
 
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.plaf.ColorUIResource;
-import java.awt.*;
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 class Owner
 {
     public Reader reader = null;
 }
+
 
 public class Main {
 
@@ -22,21 +18,27 @@ public class Main {
         public static Reader reader = null;
     }
 
+    static class Data {
+        public static Model.Data data = null;
+    }
+
 
     public static void main (String [] args) throws SQLException {
 
 /*
-        HashPassword hashPassword = new HashPassword("23far890");
+        HashPassword hashPassword = new HashPassword("321top");
         byte[] hashedBytes = hashPassword.hashPassword();
         String hashedString = Hex.encodeHexString(hashedBytes);
         System.out.println(hashedString);
 
+
  */
+
 
 
         //JFrameMainWindowCheifLibrarian jFrameСрушаLibrarian = new JFrameMainWindowCheifLibrarian();
 
-        Owner own = new Owner();
+
 
         JFrameLogin JFrameMainWindowLibrarian = new JFrameLogin();
 /*

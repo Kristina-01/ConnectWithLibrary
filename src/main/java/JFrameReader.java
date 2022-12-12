@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 
 public class JFrameReader extends JFrame  {
     Color clr1 = new Color(190, 209, 232);
@@ -12,6 +13,8 @@ public class JFrameReader extends JFrame  {
         super.setLocationRelativeTo(null);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLayout(new BorderLayout(0,0));
+        setResizable(false);
+
 
         JLabel Lname = new JLabel("Имя: ");
         String name = Main.TOwn.reader != null ? Main.TOwn.reader.res_.get(0).name : "";
@@ -22,7 +25,7 @@ public class JFrameReader extends JFrame  {
         JLabel r_surname = new JLabel(surname);
 
         JLabel Lpatrinymic = new JLabel("Отчество: ");
-        String patrinymic = Main.TOwn.reader != null ? Main.TOwn.reader.res_.get(0).name : "";
+        String patrinymic = Main.TOwn.reader != null ? Main.TOwn.reader.res_.get(0).patrinymic : "";
         JLabel r_patrinymic = new JLabel(patrinymic);
 
         JLabel Ldateofbirth = new JLabel("Дата Рождения: ");
@@ -43,7 +46,7 @@ public class JFrameReader extends JFrame  {
 
         JLabel Llibrary_card_number = new JLabel("Номер читательского билета: ");
         String card_number = Main.TOwn.reader != null ? Main.TOwn.reader.res_.get(0).number_card : "";
-        JLabel r_library_card_number = new JLabel("123123");
+        JLabel r_library_card_number = new JLabel(card_number);
 
         Button back = new Button("На главную");
         back.addActionListener(new ButtonBack());

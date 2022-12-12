@@ -19,10 +19,10 @@ public  class Reader {
     public String number_card;
 
     public Reader(){}
-    String url = "jdbc:postgresql://127.0.0.1:5432/library";
-    Connection connection= null;
+    //String url = "jdbc:postgresql://127.0.0.1:5432/library";
+    //Connection connection= null;
 
-    public void Init(Connection cont, String login, String password) throws SQLException {
+    public void Init(Connection cont, String login) throws SQLException {
 /*
 
         try {
@@ -42,7 +42,7 @@ public  class Reader {
 
  */
 
-        String sql1 = "SELECT reader_surname,reader_name,reader_patrinymic,reader_date_of_birth,reader_actual_residential_address, reader_telephone, reader_email, reader_number_card FROM reader WHERE reader_login ='"+login+"'";
+        String sql1 = "SELECT * FROM reader_view_their_data('"+login+"')";
         //var statement = connection.createStatement();
         Statement statement = null;
         statement = cont.createStatement();
@@ -61,7 +61,7 @@ public  class Reader {
             reader.email = tmpres1.getString(7);
             reader.number_card = tmpres1.getString(8);
             res_.add(reader);
-            System.out.println(res_.get(i).name);
+            System.out.println(res_.get(i).patrinymic);
             i++;
 
         }

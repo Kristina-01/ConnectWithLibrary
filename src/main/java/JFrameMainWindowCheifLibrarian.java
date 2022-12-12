@@ -10,6 +10,8 @@ public class JFrameMainWindowCheifLibrarian extends JFrame {
         super.setSize(500,350);
         super.setLocationRelativeTo(null);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+
 
         JPanel panel = new JPanel(new GridLayout(2,1,10,30));
         panel.setBackground(clr1);
