@@ -1,6 +1,9 @@
 import Model.Data;
+import Model.Extradition;
 import Model.Reader;
+import ModelView.ExtraditionService;
 import org.apache.commons.codec.binary.Hex;
+import org.springframework.context.support.GenericXmlApplicationContext;
 
 import java.sql.*;
 
@@ -20,6 +23,10 @@ public class Main {
 
     static class Data {
         public static Model.Data data = null;
+    }
+
+    public class Extradition{
+        public  static Model.Extradition extradition = null;
     }
 
 
@@ -74,7 +81,36 @@ public class Main {
             }
 
 
- */
+        GenericXmlApplicationContext ctx = new GenericXmlApplicationContext();
+        ctx.load("classpath:spring-config.xml");
+        ctx.refresh();
+
+        insertUpdateExample(ctx);
+        */
         }
+        /*
+    private static void insertUpdateExample(GenericXmlApplicationContext ctx) {
+        ExtraditionService service = ctx.getBean("jpaContactService", ExtraditionService.class);
+
+        Extradition ex = new Extradition();
+        ex.setReader_name("Name");
+        ex.setReader_surname("Surname");
+
+
+       // ContactTelDetailEntity contactTelDetail = new ContactTelDetailEntity("Home", "1111111111");
+        //contact.addContactTelDetail(contactTelDetail);
+
+       // contactTelDetail = new ContactTelDetailEntity("Городской", "8-499-000-333");
+        //contact.addContactTelDetail(contactTelDetail);
+
+       // contactTelDetail = new ContactTelDetailEntity("Mobile", "2222222222");
+       // contact.addContactTelDetail(contactTelDetail);
+
+        service.save(ex);
+    }
+
+
+         */
+
     }
 

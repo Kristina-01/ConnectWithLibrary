@@ -27,22 +27,22 @@ public class JFrameLogin  extends JFrame{
 
 
         super("Welcome");
-        setSize(500,350);
+        setSize(1000,450);
         super.setLocationRelativeTo(null);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLayout(null);
         setResizable(false);
 
-        l.setBounds(150,100, 100,30);
-        login.setBounds(220,100,100,30);
+        l.setBounds(350,150, 150,40);
+        login.setBounds(420,150,150,40);
 
 
-        p.setBounds(150,150, 100,30);
-        r_password.setBounds(220,150,100,30);
+        p.setBounds(350,200, 150,40);
+        r_password.setBounds(420,200,150,40);
 
         button.setForeground(new Color(70,130,180));
 
-        button.setBounds(210,200,100,30);
+        button.setBounds(430,250,100,40);
         button.addActionListener(new BAction());
 
         super.add(login);
@@ -127,7 +127,7 @@ public class JFrameLogin  extends JFrame{
 
             } catch (Exception ex ) {
                 errortext = new JLabel("Данные введены неверно");
-                errortext.setBounds(150,50, 200,50);
+                errortext.setBounds(385,100, 200,50);
                 errortext.setForeground(new Color(227,66,52));
                 add(errortext);
                 setVisible(true);

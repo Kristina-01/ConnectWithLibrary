@@ -23,7 +23,7 @@ public  class Reader {
 
     public void Init(Connection cont, String login) throws SQLException {
 
-        String sql1 = "SELECT * FROM reader_view_their_data('"+login+"')";
+        String sql1 = "SELECT * FROM reader_view_their_data('" + login + "')";
 
         Statement statement = null;
         statement = cont.createStatement();
@@ -44,7 +44,6 @@ public  class Reader {
             res_.add(reader);
             System.out.println(res_.get(i).patrinymic);
             i++;
-
         }
     }
 

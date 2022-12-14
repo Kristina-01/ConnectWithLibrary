@@ -8,8 +8,8 @@ public class JFrameReader extends JFrame  {
     Color clr1 = new Color(190, 209, 232);
 
     JFrameReader(){
-        super("Profile");
-        setSize(500,350);
+        super("Профиль");
+        setSize(1000,450);
         super.setLocationRelativeTo(null);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLayout(new BorderLayout(0,0));

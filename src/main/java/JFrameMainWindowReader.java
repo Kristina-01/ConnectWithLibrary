@@ -12,8 +12,8 @@ public class JFrameMainWindowReader extends JFrame {
     public JFrameMainWindowReader(){
 
 
-        super("Main Window");
-        super.setSize(500,350);
+        super("Главная");
+        super.setSize(1000,450);
         super.setLocationRelativeTo(null);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //Connection connection1 = connection;
@@ -21,7 +21,7 @@ public class JFrameMainWindowReader extends JFrame {
         setResizable(false);
 
 
-        JPanel panel = new JPanel(new GridLayout(3,1,10,10));
+        JPanel panel = new JPanel(new GridLayout(3,1,10,40));
         panel.setBackground(clr1);
 
         Button button1 = new Button("Профиль");

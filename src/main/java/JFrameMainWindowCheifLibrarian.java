@@ -6,8 +6,8 @@ public class JFrameMainWindowCheifLibrarian extends JFrame {
     Color clr1 = new Color(190, 209, 232);
 
     public JFrameMainWindowCheifLibrarian(){
-        super("Main Window");
-        super.setSize(500,350);
+        super("Главная");
+        super.setSize(1000,450);
         super.setLocationRelativeTo(null);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
