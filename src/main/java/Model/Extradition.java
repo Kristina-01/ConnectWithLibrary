@@ -24,16 +24,17 @@ public class Extradition {
     public String extradition_date_of_issue;
     public String extradition_return_date = null;
 
-    public Extradition(String copy_book_id, String reader_surname, String reader_name, String reader_numbeer_card, String book_name, String author, String extradition_date_of_issue, String extradition_return_date) {
-        this.copy_book_id = copy_book_id;
-        this.reader_surname = reader_surname;
-        this.reader_name = reader_name;
-        this.reader_numbeer_card = reader_numbeer_card;
-        this.book_name = book_name;
-        this.author = author;
-        this.extradition_date_of_issue = extradition_date_of_issue;
-        this.extradition_return_date = extradition_return_date;
+    public Extradition( String reader_surname, String reader_name, String reader_numbeer_card, String copy_book_id,String book_name, String author, String extradition_date_of_issue, String extradition_return_date) {
+        this.setReader_name(reader_name);
+        this.setReader_surname(reader_surname);
+        this.setReader_numbeer_card(reader_numbeer_card);
+        this.setCopy_book_id(copy_book_id);
+        this.setBook_name(book_name);
+        this.setAuthor(author);
+        this.setExtradition_date_of_issue(extradition_date_of_issue);
+        this.setExtradition_return_date(extradition_return_date);
     }
+
 
     /*
     public ArrayList<Extradition> Init(String copy_book_id, String reader_numbeer_card, Connection connection) {

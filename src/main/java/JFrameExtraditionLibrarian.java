@@ -1,3 +1,5 @@
+import Model.Extradition;
+import Model.ExtraditionTableModel;
 import ModelView.ExtraditionService;
 
 import javax.swing.*;
@@ -8,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.ArrayList;
 
 import static org.postgresql.util.JdbcBlackHole.close;
 
@@ -20,14 +23,15 @@ public class JFrameExtraditionLibrarian extends JFrame {
     Connection connection= null;
 
 
-    DefaultTableModel tableModel = null;
+    TableModel tableModel = null;
     JTable table = null;
 
     private  void GetDataAndLoader()
     {
-        tableModel = null;
-        table = null;
-        // очистка таблицы
+        ArrayList<Extradition> extraditions = new ArrayList<>();
+       // tableModel = null;
+       // table = null;
+/*        // очистка таблицы
         if(tableModel == null) {
             tableModel = new DefaultTableModel();
              table = new JTable(tableModel) {
@@ -47,13 +51,15 @@ public class JFrameExtraditionLibrarian extends JFrame {
             tableModel.addColumn("Дата возврата");
 
 
-        }else tableModel.setRowCount(0);
+
+
+        }//else tableModel.setRowCount(0);
         if(table == null) table = new JTable(tableModel) {
         private static final long serialVersionUID = 1L;
         public boolean isCellEditable ( int row, int column){
             return false;
         }
-    };
+    }; */
         // запрос
         String sql1 = "SELECT reader_surname,reader_name, reader_number_card,copy_book_id, book_name,(author_name, author_patrinymic, author_surname)AS author1, extradition_date_of_issue, extradition_return_date \n" +
                 "FROM extradition\n" +
@@ -84,7 +90,15 @@ public class JFrameExtraditionLibrarian extends JFrame {
            // table.setModel(tableModel);
             if (tmpres1 != null) {
                 while (tmpres1.next()) {
-                    Object[] objects = new Object[]{
+                    extraditions.add(new Extradition(tmpres1.getString(1),
+                            tmpres1.getString(2),
+                            tmpres1.getString(3),
+                            tmpres1.getString(4),
+                            tmpres1.getString(5),
+                            tmpres1.getString(6),
+                            tmpres1.getString(7),
+                            tmpres1.getString(8)));
+                   /* Object[] objects = new Object[]{
                             tmpres1.getString(1),
                             tmpres1.getString(2),
                             tmpres1.getString(3),
@@ -93,13 +107,14 @@ public class JFrameExtraditionLibrarian extends JFrame {
                             tmpres1.getString(6),
                             tmpres1.getString(7),
                             tmpres1.getString(8)
-
-                    };
-                    tableModel.insertRow(0, objects);
+                    };*/
                 }
             }
-
+            tableModel = new ExtraditionTableModel(extraditions);
+            table = new JTable(tableModel);
+            System.out.println("Количество строк: "+tableModel.getRowCount());
             JScrollPane jScrollPane = new JScrollPane(table);
+            getContentPane().add(jScrollPane);
             jScrollPane.setPreferredSize(new Dimension(900,350));
             add(jScrollPane);
         }  catch (SQLException e) {
@@ -200,7 +215,7 @@ public class JFrameExtraditionLibrarian extends JFrame {
                             tmpres1.getString(8)
 
             };
-            tableModel.insertRow(0,objects);
+           // tableModel.insertRow(0,objects);
             objects = null;
 
         }
@@ -270,7 +285,7 @@ public class JFrameExtraditionLibrarian extends JFrame {
                     connection.prepareCall(sql);
                    // cstmt.executeQuery();
                 } catch (SQLException ex) {
-                    tableModel.fireTableCellUpdated(row, 3);
+                   // tableModel.fireTableCellUpdated(row, 3);
                     throw new RuntimeException(ex);
                 }
                // TableModel model = table.getModel();
@@ -329,10 +344,10 @@ public class JFrameExtraditionLibrarian extends JFrame {
         String password = null;
         @Override
         public void actionPerformed(ActionEvent e) {
-            String value=null;
+
             int row = table.getSelectedRow();
             System.out.println(row);
-            value = table.getModel().getValueAt(row, 3).toString();
+            String value = table.getModel().getValueAt(row, 3).toString();
             //System.out.println(value);
 
             String l = Main.Data.data != null ? Main.Data.data.login : "";
