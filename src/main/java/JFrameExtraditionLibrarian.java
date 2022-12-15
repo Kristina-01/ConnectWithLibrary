@@ -21,8 +21,6 @@ public class JFrameExtraditionLibrarian extends JFrame {
     public String name;
     String password = null;
     Connection connection= null;
-
-
     TableModel tableModel = null;
     JTable table = null;
 
@@ -71,21 +69,20 @@ public class JFrameExtraditionLibrarian extends JFrame {
 
         String l = Main.Data.data != null ? Main.Data.data.login : "";
         String p = Main.Data.data != null ? Main.Data.data.password : "";
+        Statement statement = null;
+        ResultSet tmpres1 = null;
+
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(url,name,p);
+            statement = connection.createStatement();
+            tmpres1 = statement.executeQuery(sql1);
+
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException(e);
         }
 
-        Statement statement = null;
-        ResultSet tmpres1 = null;
-        try {
-            statement = connection.createStatement();
-             tmpres1 = statement.executeQuery(sql1);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+
         try {
            // table.setModel(tableModel);
             if (tmpres1 != null) {
@@ -95,7 +92,7 @@ public class JFrameExtraditionLibrarian extends JFrame {
                             tmpres1.getString(3),
                             tmpres1.getString(4),
                             tmpres1.getString(5),
-                            tmpres1.getString(6),
+                            tmpres1.getString(6).replaceAll("[(),.\"\\\"\"]", " " ),
                             tmpres1.getString(7),
                             tmpres1.getString(8)));
                    /* Object[] objects = new Object[]{
@@ -108,11 +105,11 @@ public class JFrameExtraditionLibrarian extends JFrame {
                             tmpres1.getString(7),
                             tmpres1.getString(8)
                     };*/
+
                 }
             }
             tableModel = new ExtraditionTableModel(extraditions);
             table = new JTable(tableModel);
-            System.out.println("Количество строк: "+tableModel.getRowCount());
             JScrollPane jScrollPane = new JScrollPane(table);
             getContentPane().add(jScrollPane);
             jScrollPane.setPreferredSize(new Dimension(900,350));
@@ -137,8 +134,20 @@ public class JFrameExtraditionLibrarian extends JFrame {
         returnbook.setPreferredSize(new Dimension(150,40));
         returnbook.addActionListener(new ReturnBook());
 
+        Button back = new Button("На глаавную");
+        back.addActionListener(new ButtonBack());
+        back.setForeground(new Color(70,130,180));
+        back.setPreferredSize(new Dimension(150,40));
+
+        Button newExtadition = new Button("Выдать книгу ");
+        newExtadition.addActionListener(new ButtonNewExtadition());
+        newExtadition.setForeground(new Color(70,130,180));
+        newExtadition.setPreferredSize(new Dimension(150,40));
+
 
         add(returnbook);
+        add(back);
+        add(newExtadition);
         setLayout(new FlowLayout(FlowLayout.CENTER));
         super.getContentPane().setBackground(clr1);
         super.setVisible(true);
@@ -346,9 +355,7 @@ public class JFrameExtraditionLibrarian extends JFrame {
         public void actionPerformed(ActionEvent e) {
 
             int row = table.getSelectedRow();
-            System.out.println(row);
-            String value = table.getModel().getValueAt(row, 3).toString();
-            //System.out.println(value);
+            String value = tableModel.getValueAt(row, 3).toString();
 
             String l = Main.Data.data != null ? Main.Data.data.login : "";
             String p = Main.Data.data != null ? Main.Data.data.password : "";
