@@ -18,7 +18,7 @@ public class JFrameNewExtradition extends JFrame {
     JTextField insert_nb = new JTextField();
     JButton button = new JButton("Добавить");
     Button back = new Button("Назад");
-    JLabel errortext;
+
     public JFrameNewExtradition() throws ClassNotFoundException, SQLException {
         super("Выдача книг");
         super.setSize(1000,450);
@@ -44,9 +44,11 @@ public class JFrameNewExtradition extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                JLabel errortext;
                 String l = Main.Data.data != null ? Main.Data.data.login : "";
                 String p = Main.Data.data != null ? Main.Data.data.password : "";
-                boolean hm = true;
+                boolean hm = false;
                 try {
                     Class.forName("org.postgresql.Driver");
                     connection = DriverManager.getConnection(url,name,p);
@@ -57,16 +59,16 @@ public class JFrameNewExtradition extends JFrame {
                         statement.setString(3, Main.Data.data.login);
                         statement.execute();
                     };
+                 JOptionPane.showMessageDialog(null,"Данные введены не верно");
 
                 } catch (ClassNotFoundException | SQLException ex) {
-
+                    JOptionPane.showMessageDialog(null,"Данные введены не верно");
                     throw new RuntimeException(ex);
                 }
+
             }
         });
-
-
-
+       // add(errortext);
         add(back);
         add(number_card);
         add(insert_nc);

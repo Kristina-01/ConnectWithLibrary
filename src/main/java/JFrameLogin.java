@@ -84,8 +84,6 @@ public class JFrameLogin  extends JFrame{
                 String check2 = "SELECT COUNT(*)=1 AS b FROM employee WHERE ((employee_login = '"+ name+"') AND (employee_post = 'librarian') AND (employee_password="+"'"+ hashedString +"'))";
                 String check3 = "SELECT COUNT(*)=1 as b FROM employee WHERE ((employee_login = '"+ name+"') AND (employee_post = 'cheif_librarian') AND (employee_password="+"'"+ hashedString +"'))";
 
-
-
                 var tmpres1 = statement.executeQuery(check1);
                 boolean isres1= false;
                 while (tmpres1.next()) {
@@ -125,10 +123,11 @@ public class JFrameLogin  extends JFrame{
                 }
 
             } catch (Exception ex ) {
-                errortext = new JLabel("Данные введены неверно");
-                errortext.setBounds(385,100, 200,50);
-                errortext.setForeground(new Color(227,66,52));
-                add(errortext);
+               // errortext = new JLabel("Данные введены неверно");
+               // errortext.setBounds(385,100, 200,50);
+               // errortext.setForeground(new Color(227,66,52));
+              //  add(errortext);
+                JOptionPane.showMessageDialog(null, "Данные введены неверно");
                 setVisible(true);
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
 
