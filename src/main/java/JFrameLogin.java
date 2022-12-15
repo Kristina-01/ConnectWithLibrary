@@ -114,7 +114,6 @@ public class JFrameLogin  extends JFrame{
                         isres3 = tmpres3.getBoolean(1);
                     }
                 }
-
                 if(isres1){
                     JFrameMainWindowReader jFrameReader = new JFrameMainWindowReader();
                 }

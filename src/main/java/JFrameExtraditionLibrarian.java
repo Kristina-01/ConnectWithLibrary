@@ -1,6 +1,8 @@
+import Model.Data;
 import Model.Extradition;
 import Model.ExtraditionTableModel;
 import ModelView.ExtraditionService;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -10,6 +12,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import static org.postgresql.util.JdbcBlackHole.close;
@@ -363,11 +368,18 @@ public class JFrameExtraditionLibrarian extends JFrame {
                 Class.forName("org.postgresql.Driver");
                 connection = DriverManager.getConnection(url,name,p);
 
-                Statement statement = null;
-                statement = connection.createStatement();
+                Statement statement1 = null;
+                statement1 = connection.createStatement();
 
-                String sql = "UPDATE extradition SET extradition_return_date = CURRENT_DATE";
-                var resultSet = statement.executeUpdate(sql);
+                String sql = "CALL update_date_return("+ value +")";
+                var resultSet = statement1.executeUpdate(sql);
+
+                Statement statement2 = null;
+                statement2 = connection.createStatement();
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd");
+                String localDate = LocalDate.now().toString();
+
+                tableModel.setValueAt(localDate, row, 7);
 
                 //CallableStatement cstmt = connection.prepareCall(sql);
                 //cstmt.executeQuery();
@@ -378,7 +390,11 @@ public class JFrameExtraditionLibrarian extends JFrame {
             finally {
                 close(connection);
             }
-            GetDataAndLoader();
+            //GetDataAndLoader();
+
+
+
+
 
         }
 

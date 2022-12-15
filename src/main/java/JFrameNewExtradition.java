@@ -1,10 +1,10 @@
-import Model.Extradition;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class JFrameNewExtradition extends JFrame {
     Color clr1 = new Color(190, 209, 232);
@@ -18,7 +18,7 @@ public class JFrameNewExtradition extends JFrame {
     JTextField insert_nb = new JTextField();
     JButton button = new JButton("Добавить");
     Button back = new Button("Назад");
-
+    JLabel errortext;
     public JFrameNewExtradition() throws ClassNotFoundException, SQLException {
         super("Выдача книг");
         super.setSize(1000,450);
@@ -39,7 +39,33 @@ public class JFrameNewExtradition extends JFrame {
 
         button.setForeground(new Color(70,130,180));
         button.setBounds(515,250,100,40);
-        button.addActionListener(new Insertextradition());
+
+        button.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String l = Main.Data.data != null ? Main.Data.data.login : "";
+                String p = Main.Data.data != null ? Main.Data.data.password : "";
+                boolean hm = true;
+                try {
+                    Class.forName("org.postgresql.Driver");
+                    connection = DriverManager.getConnection(url,name,p);
+
+                   try(CallableStatement statement = connection.prepareCall("call create_extradition(?,?,?)")) {
+                        statement.setInt(1, Integer.parseInt(insert_nc.getText()));
+                        statement.setInt(2, Integer.parseInt(insert_nb.getText()));
+                        statement.setString(3, Main.Data.data.login);
+                        statement.execute();
+                    };
+
+                } catch (ClassNotFoundException | SQLException ex) {
+
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
+
+
 
         add(back);
         add(number_card);
@@ -52,7 +78,7 @@ public class JFrameNewExtradition extends JFrame {
     }
 
     class Insertextradition implements ActionListener{
-
+        JLabel errortext;
         @Override
         public void actionPerformed(ActionEvent e) {
             String l = Main.Data.data != null ? Main.Data.data.login : "";
@@ -67,11 +93,14 @@ public class JFrameNewExtradition extends JFrame {
                 System.out.println(Main.Data.data.login);
 
                 String query = "CALL create_extradition(" + insert_nc.getText() + "," + insert_nb.getText() + ",'" + Main.Data.data.login + "')";
-                ResultSet resultSet = statement.executeQuery(query);
+                int resultSet = statement.executeUpdate(query);
 
                 //Extradition extradition = new Extradition();
 
             } catch (ClassNotFoundException | SQLException ex) {
+                errortext = new JLabel("Данные введены неверно");
+                errortext.setForeground(new Color(227,66,52));
+                add(errortext);
                 throw new RuntimeException(ex);
             }
         }
