@@ -18,6 +18,9 @@ public  class Reader {
     public String email;
     public String number_card;
 
+    public  String r_login;
+    public String r_password;
+
     public Reader(){}
 
 
@@ -47,7 +50,7 @@ public  class Reader {
         }
     }
 
-    public Reader(String surname, String name,String patrinymic,String date_of_birth, String actual_address, String telephone,String email,String number_card){
+    public Reader(String surname, String name,String patrinymic,String date_of_birth, String actual_address, String telephone,String email,String number_card, String r_login, String r_password){
         this.surname = surname;
         this.name = name;
         this.patrinymic = patrinymic;

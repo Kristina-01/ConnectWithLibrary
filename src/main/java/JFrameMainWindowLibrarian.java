@@ -28,6 +28,7 @@ public class JFrameMainWindowLibrarian extends JFrame {
 
         Button button3 = new Button("Новый читатель");
         button3.setPreferredSize(new Dimension(350,60));
+        button3.addActionListener(new ButtonCreateNewReader());
 
 
         panel.add(button1);
@@ -61,6 +62,21 @@ public class JFrameMainWindowLibrarian extends JFrame {
             setVisible(false);
             try {
                 JFrameExtraditionLibrarian jFrameExtraditionLibrarian = new JFrameExtraditionLibrarian();
+            } catch (ClassNotFoundException ex) {
+                throw new RuntimeException(ex);
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+    }
+
+    class  ButtonCreateNewReader implements  ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            setVisible(false);
+            try {
+                JFrameCraeteReader jFrameCraeteReader = new JFrameCraeteReader();
             } catch (ClassNotFoundException ex) {
                 throw new RuntimeException(ex);
             } catch (SQLException ex) {
