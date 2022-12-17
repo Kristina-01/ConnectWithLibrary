@@ -59,7 +59,7 @@ public class JFrameNewExtradition extends JFrame {
                         statement.setString(3, Main.Data.data.login);
                         statement.execute();
                     };
-                 JOptionPane.showMessageDialog(null,"Данные введены не верно");
+                 //JOptionPane.showMessageDialog(null,"Данные введены не верно");
 
                 } catch (ClassNotFoundException | SQLException ex) {
                     JOptionPane.showMessageDialog(null,"Данные введены не верно");

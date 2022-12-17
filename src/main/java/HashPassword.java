@@ -16,14 +16,16 @@ public  class HashPassword {
 
 
     static SecureRandom secureRandom = new SecureRandom();
-    //Рандомная генерация соли
-    static String salt = "4123890";
-
+    //соль
+    static String salt = "rfr45ltkf0";
+    //кол-во итераций
     static int iteractions = 10000;
+    //длина
     static int keyLenght = 128;
 
     public  byte[] hashPassword(){
         try {
+            //применение алгоритма
             SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA512");
             PBEKeySpec spec = new PBEKeySpec(password, salt.getBytes(), iteractions, keyLenght);
             SecretKey key = skf.generateSecret(spec);

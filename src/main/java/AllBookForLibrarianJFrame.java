@@ -40,11 +40,10 @@ public class AllBookForLibrarianJFrame extends JFrame {
 
 
         tableModel.addColumn("Название");
-        tableModel.addColumn("Имя автор");
-        tableModel.addColumn("Отчество автор");
-        tableModel.addColumn("Фамилия автор");
+        tableModel.addColumn("Aвтор");
         tableModel.addColumn("Жанр");
-        tableModel.addColumn("Год публикации");
+        tableModel.addColumn("Год издания");
+        tableModel.addColumn("Количество страниц");
         tableModel.addColumn("Издательство");
         tableModel.addColumn("Статус");
         String l = Main.Data.data != null ? Main.Data.data.login : "";
@@ -56,25 +55,21 @@ public class AllBookForLibrarianJFrame extends JFrame {
         Statement statement = null;
         statement = connection.createStatement();
 
-        String sql1 = "SELECT  book_name, author_name, author_patrinymic, author_surname, genre_name, book_publishes_year, ph_name, \n" +
-                "CASE WHEN copy_book_availability THEN 'В наличии' ELSE 'Отсутствует' END AS copy_book_availability\n" +
-                "FROM all_book ";
+        String sql1 = "SELECT literary_work_name, (author_name, author_patrinymic, author_surname) as author, genre_name, book_publishes_year, book_count_of_pages, ph_name, copy_book_availability FROM all_book\n";
 
         var tmpres1 = statement.executeQuery(sql1);
 
 
         while (tmpres1.next())
         {
-
             Object [] objects = new Object[]{
                     tmpres1.getString(1),
-                    tmpres1.getString(2),
+                    tmpres1.getString(2).replaceAll("[(),.\"\\\"\"]", " " ),
                     tmpres1.getString(3),
                     tmpres1.getString(4),
                     tmpres1.getString(5),
                     tmpres1.getString(6),
-                    tmpres1.getString(7),
-                    tmpres1.getString(8)
+                    tmpres1.getString(7)
             };
 
             tableModel.insertRow(0,objects);

@@ -32,50 +32,15 @@ public class JFrameExtraditionLibrarian extends JFrame {
     private  void GetDataAndLoader()
     {
         ArrayList<Extradition> extraditions = new ArrayList<>();
-       // tableModel = null;
-       // table = null;
-/*        // очистка таблицы
-        if(tableModel == null) {
-            tableModel = new DefaultTableModel();
-             table = new JTable(tableModel) {
-                private static final long serialVersionUID = 1L;
-                public boolean isCellEditable(int row, int column) {
-                    return false;
-                }
-            };
 
-            tableModel.addColumn("Фамилия читателя");
-            tableModel.addColumn("Имя читателя");
-            tableModel.addColumn("№ читательского билета");
-            tableModel.addColumn("Шифр книги");
-            tableModel.addColumn("Книга");
-            tableModel.addColumn("Автор");
-            tableModel.addColumn("Дата взятия");
-            tableModel.addColumn("Дата возврата");
-
-
-
-
-        }//else tableModel.setRowCount(0);
-        if(table == null) table = new JTable(tableModel) {
-        private static final long serialVersionUID = 1L;
-        public boolean isCellEditable ( int row, int column){
-            return false;
-        }
-    }; */
         // запрос
-        String sql1 = "SELECT reader_surname,reader_name, reader_number_card,copy_book_id, book_name,(author_name, author_patrinymic, author_surname)AS author1, extradition_date_of_issue, extradition_return_date \n" +
-                "FROM extradition\n" +
-                "JOIN reader ON (extradition_reader = reader_id)\n" +
-                "JOIN copy_book ON (copy_book_id = extradition_book)\n" +
-                "JOIN book ON (copy_book_book = book_id)\n" +
-                "JOIN author_book ON (ab_book = book_id)\n" +
-                "JOIN author ON (author_id= ab_author)";
+        String sql1 = "select * from view_extradition\n";
 
         String l = Main.Data.data != null ? Main.Data.data.login : "";
         String p = Main.Data.data != null ? Main.Data.data.password : "";
         Statement statement = null;
         ResultSet tmpres1 = null;
+
 
         try {
             Class.forName("org.postgresql.Driver");
@@ -89,27 +54,23 @@ public class JFrameExtraditionLibrarian extends JFrame {
 
 
         try {
-           // table.setModel(tableModel);
+
+
             if (tmpres1 != null) {
                 while (tmpres1.next()) {
+                    String authorname = tmpres1.getString(6);
+                    String authorsurname = tmpres1.getString(7);
+                    String authorpatrinymic = tmpres1.getString(8);
+                    String authordone = authorname +" " + authorsurname+" " +authorpatrinymic;
                     extraditions.add(new Extradition(tmpres1.getString(1),
                             tmpres1.getString(2),
                             tmpres1.getString(3),
                             tmpres1.getString(4),
                             tmpres1.getString(5),
-                            tmpres1.getString(6).replaceAll("[(),.\"\\\"\"]", " " ),
-                            tmpres1.getString(7),
-                            tmpres1.getString(8)));
-                   /* Object[] objects = new Object[]{
-                            tmpres1.getString(1),
-                            tmpres1.getString(2),
-                            tmpres1.getString(3),
-                            tmpres1.getString(4),
-                            tmpres1.getString(5),
-                            tmpres1.getString(6),
-                            tmpres1.getString(7),
-                            tmpres1.getString(8)
-                    };*/
+                            authordone,
+                            tmpres1.getString(9),
+                            tmpres1.getString(10)));
+
 
                 }
             }
@@ -165,27 +126,7 @@ public class JFrameExtraditionLibrarian extends JFrame {
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setLayout(new BorderLayout(10,0));
         setResizable(false);
-/*
-        DefaultTableModel tableModel = new DefaultTableModel();
-         JTable table = new JTable(tableModel){
-            private static final long serialVersionUID = 1L;
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            };
-        };
-        table.setSelectionForeground(new Color (203,221,245));
-        table.setSelectionBackground(new Color(70,136,227));
 
-        tableModel.addColumn("Фамилия читателя");
-        tableModel.addColumn("Имя читателя");
-        tableModel.addColumn("№ читательского билета");
-        tableModel.addColumn("Шифр книги");
-        tableModel.addColumn("Книга");
-        tableModel.addColumn("Автор");
-        tableModel.addColumn("Дата взятия");
-        tableModel.addColumn("Дата возврата");
-
- */
 
         Button back = new Button("На глаавную");
         back.addActionListener(new ButtonBack());
@@ -246,49 +187,7 @@ public class JFrameExtraditionLibrarian extends JFrame {
         returnbook.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-/*
-                DefaultTableModel model = (DefaultTableModel)table.getModel();
-                model.setRowCount(0);
 
-                int row = table.getSelectedRow();
-                String value = table.getModel().getValueAt(row, 3).toString();
-                System.out.println(value);
-                String sql = "CALL update_date_return("+ value + ")";
-
-                String sql1 = "SELECT reader_surname,reader_name, reader_number_card,copy_book_id, book_name,(author_name, author_patrinymic, author_surname)AS author1, extradition_date_of_issue, extradition_return_date \n" +
-                        "FROM extradition\n" +
-                        "JOIN reader ON (extradition_reader = reader_id)\n" +
-                        "JOIN copy_book ON (copy_book_id = extradition_book)\n" +
-                        "JOIN book ON (copy_book_book = book_id)\n" +
-                        "JOIN author_book ON (ab_book = book_id)\n" +
-                        "JOIN author ON (author_id= ab_author)";
-
-                try {
-                    var tmpres1 = finalStatement.executeQuery(sql);
-                    var tmpres2 = finalStatement1.executeQuery(sql1);
-
-                    tableModel.setRowCount(0);
-                    while (tmpres2.next())
-                    {
-                        Object [] objects = new Object[]{
-                                tmpres2.getString(1),
-                                tmpres2.getString(2),
-                                tmpres2.getString(3),
-                                tmpres2.getString(4),
-                                tmpres2.getString(5),
-                                tmpres2.getString(6),
-                                tmpres2.getString(7),
-                                tmpres2.getString(8),
-                        };
-                        model.insertRow(0,objects);
-                        objects = null;
-
-                    }
-                } catch (SQLException ex) {
-                    throw new RuntimeException(ex);
-                }
-
- */
                 int row = table.getSelectedRow();
                 String value = table.getModel().getValueAt(row, 3).toString();
                 System.out.println(value);
@@ -302,10 +201,6 @@ public class JFrameExtraditionLibrarian extends JFrame {
                    // tableModel.fireTableCellUpdated(row, 3);
                     throw new RuntimeException(ex);
                 }
-               // TableModel model = table.getModel();
-
-
-
 
             }
 
@@ -361,6 +256,7 @@ public class JFrameExtraditionLibrarian extends JFrame {
 
             int row = table.getSelectedRow();
             String value = tableModel.getValueAt(row, 3).toString();
+            System.out.println(value);
 
             String l = Main.Data.data != null ? Main.Data.data.login : "";
             String p = Main.Data.data != null ? Main.Data.data.password : "";
@@ -368,21 +264,20 @@ public class JFrameExtraditionLibrarian extends JFrame {
                 Class.forName("org.postgresql.Driver");
                 connection = DriverManager.getConnection(url,name,p);
 
-                Statement statement1 = null;
-                statement1 = connection.createStatement();
+                PreparedStatement statement1 = null;
 
-                String sql = "CALL update_date_return("+ value +")";
-                var resultSet = statement1.executeUpdate(sql);
 
-                Statement statement2 = null;
-                statement2 = connection.createStatement();
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu/MM/dd");
+                String sql = "CALL update_date_return(?)";
+                statement1 = connection.prepareStatement(sql);
+                statement1.setInt(1, Integer.parseInt(value));
+                statement1.executeUpdate();
+
+
                 String localDate = LocalDate.now().toString();
 
                 tableModel.setValueAt(localDate, row, 7);
 
-                //CallableStatement cstmt = connection.prepareCall(sql);
-                //cstmt.executeQuery();
+
             } catch (ClassNotFoundException |SQLException ex) {
 
                 throw new RuntimeException(ex);
@@ -390,20 +285,8 @@ public class JFrameExtraditionLibrarian extends JFrame {
             finally {
                 close(connection);
             }
-            //GetDataAndLoader();
-
-
-
-
-
         }
-
-
-
     }
-
-
-
 }
 
 

@@ -26,7 +26,7 @@ public class JFrameLogin  extends JFrame{
     public JFrameLogin(){
 
 
-        super("Welcome");
+        super("Вход");
         setSize(1000,450);
         super.setLocationRelativeTo(null);
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -77,14 +77,21 @@ public class JFrameLogin  extends JFrame{
                 Class.forName("org.postgresql.Driver");
                 connection = DriverManager.getConnection(url,name,hashedString);
 
-                Statement statement = null;
-                statement = connection.createStatement();
+                // PreparedStatement statement1 = null;
+                PreparedStatement statement2 = null;
 
-                String check1 = "SELECT COUNT(*)=1 AS b FROM reader WHERE reader_login ='"+ name+"'"+ "AND reader_password=" +"'"+ hashedString +"'";
-                String check2 = "SELECT COUNT(*)=1 AS b FROM employee WHERE ((employee_login = '"+ name+"') AND (employee_post = 'librarian') AND (employee_password="+"'"+ hashedString +"'))";
-                String check3 = "SELECT COUNT(*)=1 as b FROM employee WHERE ((employee_login = '"+ name+"') AND (employee_post = 'cheif_librarian') AND (employee_password="+"'"+ hashedString +"'))";
 
-                var tmpres1 = statement.executeQuery(check1);
+                String check1 = "SELECT COUNT(*)=1 AS b FROM reader WHERE reader_login = ? AND reader_password = ?";
+                PreparedStatement statement1 = connection.prepareStatement(check1);
+                statement1.setString(1, name);
+                statement1.setString(2,hashedString);
+                String check2 = "SELECT COUNT(*)=1 AS b FROM employee WHERE employee_login = ? AND employee_password = ?";
+                statement2 = connection.prepareStatement(check2);
+                statement2.setString(1,name);
+                statement2.setString(2, hashedString);
+
+
+                var tmpres1 = statement1.executeQuery();
                 boolean isres1= false;
                 while (tmpres1.next()) {
                      Reader r = new Reader();
@@ -97,7 +104,7 @@ public class JFrameLogin  extends JFrame{
 
                 boolean isres2 = false;
                 if (isres1==false){
-                    var tmpres2 = statement.executeQuery(check2);
+                    var tmpres2 = statement2.executeQuery();
                     while (tmpres2.next()) {
                         isres2 = tmpres2.getBoolean(1);
                         Data data = new Data(name, hashedString);
@@ -105,28 +112,19 @@ public class JFrameLogin  extends JFrame{
                     }
                 }
 
-                boolean isres3 = false;
-                if((isres1==false) & (isres2==false)){
-                    var tmpres3 = statement.executeQuery(check3);
-                    while (tmpres3.next()) {
-                        isres3 = tmpres3.getBoolean(1);
-                    }
-                }
+
+
+
                 if(isres1){
                     JFrameMainWindowReader jFrameReader = new JFrameMainWindowReader();
                 }
                 else if (isres2){
                     JFrameMainWindowLibrarian jFrameLibrarian = new JFrameMainWindowLibrarian();
                 }
-                else if(isres3){
-                    JFrameMainWindowCheifLibrarian jFrameСрушаLibrarian = new JFrameMainWindowCheifLibrarian();
-                }
+
 
             } catch (Exception ex ) {
-               // errortext = new JLabel("Данные введены неверно");
-               // errortext.setBounds(385,100, 200,50);
-               // errortext.setForeground(new Color(227,66,52));
-              //  add(errortext);
+
                 JOptionPane.showMessageDialog(null, "Данные введены неверно");
                 setVisible(true);
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);

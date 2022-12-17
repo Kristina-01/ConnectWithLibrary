@@ -42,8 +42,8 @@ public  class Reader {
             reader.date_of_birth = tmpres1.getString(4);
             reader.actual_address = tmpres1.getString(5);
             reader.telephone = tmpres1.getString(6);
-            reader.email = tmpres1.getString(7);
-            reader.number_card = tmpres1.getString(8);
+            reader.email = tmpres1.getString(9);
+            reader.number_card = tmpres1.getString(10);
             res_.add(reader);
             System.out.println(res_.get(i).patrinymic);
             i++;

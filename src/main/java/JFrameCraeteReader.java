@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Pattern;
 
 public class JFrameCraeteReader extends JFrame {
 
@@ -52,6 +53,7 @@ public class JFrameCraeteReader extends JFrame {
     JTextField r_password;
 
     Button addreader;
+    Button back;
 
     Color clr1 = new Color(190, 209, 232);
     String url = "jdbc:postgresql://127.0.0.1:5432/library";
@@ -106,6 +108,9 @@ public class JFrameCraeteReader extends JFrame {
         addreader = new Button("Зарегестрировать");
         addreader.addActionListener(new AddReader());
 
+        back = new Button("На главную");
+        back.addActionListener(new Back());
+
         add(name);
         add(r_name);
 
@@ -130,11 +135,11 @@ public class JFrameCraeteReader extends JFrame {
         add(passportnumbers);
         add(r_passportnumbers);
 
-        add(cardnumber);
-        add(r_cardnumber);
-
         add(email);
         add(r_email);
+
+        add(cardnumber);
+        add(r_cardnumber);
 
         add(login);
         add(r_login);
@@ -143,6 +148,7 @@ public class JFrameCraeteReader extends JFrame {
         add(r_password);
 
         add(addreader);
+        add(back);
 
         setLayout(new GridLayout(13,2));
         setVisible(true);
@@ -157,82 +163,79 @@ public class JFrameCraeteReader extends JFrame {
             byte[] hashedBytes = hashPassword.hashPassword();
             String hashedString = Hex.encodeHexString(hashedBytes);
 
-            String ourdate = r_dateofbirth.getText();
-
-
-
             PreparedStatement preparedStatement = null;
 
             String sql = "CALL create_reader(?,?,?,?,?,?,?,?,?,?,?,?)";
             try {
-                //java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(ourdate);
-                //java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
                 Class.forName("org.postgresql.Driver");
                 connection = DriverManager.getConnection(url,Main.Data.data.login, Main.Data.data.password);
                 preparedStatement = connection.prepareStatement(sql);
 
-               /* String string_date = "12-December-2001";
-                SimpleDateFormat f = new SimpleDateFormat("dd-MM-yyyy");
-                long milliseconds;
-                try{
-                    Date d = f.parse(string_date);
-                     milliseconds =d.getTime();
-                } catch (ParseException e){
-                    e.printStackTrace();
-                }
-
-                */
                 DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                Date utildate =new Date(0) ;
-                java.sql.Date date = new Date(utildate.getTime());
-
-                String sd= new String(r_dateofbirth.getText());
+                String sd= (r_dateofbirth.getText());
                 long milliseconds = LocalDate.parse(sd, dateFormat).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli();
                 Date donedate = new Date(milliseconds);
                 java.sql.Date dd= new Date(donedate.getTime());
 
-                preparedStatement.setString(1, r_name.getText());
-                preparedStatement.setString(2,r_surname.getText());
-                preparedStatement.setString(3,  r_patronymic.getText());
-                preparedStatement.setDate(4, dd);
-                preparedStatement.setString(5, r_address.getText());
-                preparedStatement.setString(6, r_telephone.getText());
-                preparedStatement.setShort(7,Short.valueOf(r_passportseries.getText()));
-                preparedStatement.setInt(8, Integer.parseInt(r_passportnumbers.getText()));
-                preparedStatement.setString(9, r_email.getText());
-                preparedStatement.setInt(10, Integer.parseInt(r_cardnumber.getText()));
-                preparedStatement.setString(11,r_login.getText());
-                preparedStatement.setString(12, hashedString);
+                String password = r_password.getText();
+                if (checkpassword(password)) {
 
-/*
-                preparedStatement.setString(1, r_surname.getText());
-                preparedStatement.setString(2,r_name.getText());
-                preparedStatement.setString(3, r_patronymic.getText());
-                preparedStatement.setDate(4, java.sql.Date.valueOf(r_dateofbirth.getText()));
-                preparedStatement.setString(5, r_address.getText());
-                preparedStatement.setString(6, r_telephone.getText());
-                preparedStatement.setObject(7, Integer.parseInt(r_passportseries.getText()));
-                preparedStatement.setInt(8, Integer.parseInt(r_passportnumbers.getText()));
-                preparedStatement.setString(9, r_email.getText());
-                preparedStatement.setInt(10, Integer.parseInt(r_cardnumber.getText()));
-                preparedStatement.setString(11,r_login.getText());
-                preparedStatement.setString(12, hashedString);
+                    preparedStatement.setString(1, r_name.getText());
+                    preparedStatement.setString(2,r_surname.getText());
+                    preparedStatement.setString(3,  r_patronymic.getText());
+                    preparedStatement.setDate(4, dd);
+                    preparedStatement.setString(5, r_address.getText());
+                    preparedStatement.setString(6, r_telephone.getText());
+                    preparedStatement.setShort(7,Short.valueOf(r_passportseries.getText()));
+                    preparedStatement.setInt(8, Integer.parseInt(r_passportnumbers.getText()));
+                    preparedStatement.setString(9, r_email.getText());
+                    preparedStatement.setInt(10, Integer.parseInt(r_cardnumber.getText()));
+                    preparedStatement.setString(11,r_login.getText());
+                    preparedStatement.setString(12, hashedString);
 
- */
-
-                preparedStatement.executeUpdate();
+                    preparedStatement.executeUpdate();
+                }
+                else {
+                    JOptionPane.showMessageDialog(null,"Пароль является ненадежным");
+                }
 
             } catch (ClassNotFoundException | SQLException ex) {
                 throw new RuntimeException(ex);
             }
 
+        }
 
+        public boolean checkpassword(String p){
+            //Использование регулярного выражения
+            // пароль длиной от 8 до 32 символов, требующий как минимум 3 из 4 (верхний регистр
+            // и строчные буквы, цифры и специальные символы) и не более
+            // 2 одинаковых последовательных символа.
+            final String COMPLEX_PASSWORD_REGEX =
+                    "^(?:(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|" +
+                            "(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|" +
+                            "(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|" +
+                            "(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))(?!.*(.)\\1{2,})" +
+                            "[A-Za-z0-9!~<>,;:_=?*+#.\"&§%°()\\|\\[\\]\\-\\$\\^\\@\\/]" +
+                            "{8,32}$";
 
+            final Pattern PASSWORD_PATTERN =
+                    Pattern.compile(COMPLEX_PASSWORD_REGEX);
 
+            if (PASSWORD_PATTERN.matcher(p).matches()){
+                return true;
+            }
+            else{
+                return false;
+            }
 
+        }
 
-
-
+    }
+    public class Back implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            setVisible(false);
+            JFrameMainWindowLibrarian jFrameMainWindowLibrarian = new JFrameMainWindowLibrarian();
 
         }
     }

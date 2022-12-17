@@ -3,16 +3,12 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class JFrameBooksReader extends JFrame{
     Color clr1 = new Color(190, 209, 232);
     String url = "jdbc:postgresql://127.0.0.1:5432/library";
-    public String name;
-    String password = null;
+
     Connection connection= null;
 
     public  JFrameBooksReader() throws ClassNotFoundException, SQLException {
@@ -44,13 +40,14 @@ public class JFrameBooksReader extends JFrame{
         String l = Main.Data.data != null ? Main.Data.data.login : "";
         String p = Main.Data.data != null ? Main.Data.data.password : "";
         Class.forName("org.postgresql.Driver");
-        connection = DriverManager.getConnection(url,name,p);
+        connection = DriverManager.getConnection(url,l,p);
 
-        Statement statement = null;
-        statement = connection.createStatement();
+        PreparedStatement statement = null;
+        String sql1 = "SELECT ex_book, ex_date_of_issue, ex_return_date FROM reader_view_their_extradition(?);";
+        statement = connection.prepareStatement(sql1);
+        statement.setString(1,l);
 
-        String sql1 = "SELECT ex_book, ex_date_of_issue, ex_return_date FROM reader_view_their_extradition('"+l +"');";
-        var tmpres1 = statement.executeQuery(sql1);
+        var tmpres1 = statement.executeQuery();
 
         while (tmpres1.next())
         {
