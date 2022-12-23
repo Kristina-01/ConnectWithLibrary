@@ -1,7 +1,6 @@
 import Model.Data;
 import Model.Extradition;
 import Model.ExtraditionTableModel;
-import ModelView.ExtraditionService;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.swing.*;
