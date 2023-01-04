@@ -28,11 +28,7 @@ public class Main {
     static class Data {
         public static Model.Data data = null;
     }
-
-
-
-
-
+    
     public static void main (String [] args) throws SQLException {
 
         JFrameLogin JFrameMainWindowLibrarian = new JFrameLogin();

@@ -138,13 +138,6 @@ public class JFrameLogin  extends JFrame{
                     }
                 }
             }
-
-
-
         }
     }
-
-
-
-
 }

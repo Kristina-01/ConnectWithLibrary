@@ -239,7 +239,4 @@ public class JFrameCraeteReader extends JFrame {
 
         }
     }
-
-
-
 }
